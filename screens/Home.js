@@ -7,38 +7,48 @@ import Categories from '../components/Categories';
 import RestaurantItems, { localRestaurants } from '../components/RestaurantItems';
 
 const YELP_API_KEY = "LTjGqMCDVFetAWnLZ8atNNqLhfGk_hj1G8ON9ricdnDfepZNxvdOeBGXwj0A-shjXF7qYSx0snksxWc5Ml2NIqTBlb8GdTv96ziaMhcoDQeHqocxKsHGeM6RMhVKYXYx"
+// 
 
 export default function Home() {
     const [restaurantsData, setRestaurantsData] = useState(localRestaurants)
+    const [city, setCity] = useState("SanFrancisco");
+    const [activeTab, setActiveTab] = useState("Delivery");
 
     const getRestaurantsFromYelp = () => {
-        const yelpUrl = "https://api.yelp.com/v3/businesses/search?term=restaurants&location=Hollywood";
+        const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
 
         const apiOptions = {
             headers: {
                 Authorization: `Bearer ${YELP_API_KEY}`,
             },
         };
-            return fetch(yelpUrl, apiOptions)
+        
+        return fetch(yelpUrl, apiOptions)
                 .then((res) => res.json())
-                .then(json => setRestaurantsData(json.businesses));
+                .then(json => 
+                    setRestaurantsData(json.businesses.filter((business) => 
+                        business.transactions.includes(activeTab.toLowerCase())                
+                        )       
+                    )
+                );
 
     };
 
+    // when city and activeTab changes, reload the yelp data (meaning of useEffect)
     useEffect(() => {
         getRestaurantsFromYelp();
-    })
+    }, [city, activeTab]);
 
     return (
         // flex : 1 makes the entire screen grey
         <SafeAreaView style={{ backgroundColor: '#eee', flex: 1 }}>
             <View style={{ backgroundColor: 'white', padding: 15 }}>
-                <HeaderTabs />
-                <SearchBar />
+                <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab}/>
+                <SearchBar  cityHandler={setCity}/>
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Categories />
-                <RestaurantItems restaurantsData={restaurantsData} />
+                <RestaurantItems restaurantsData={restaurantsData}/>
             </ScrollView>
         </SafeAreaView>
     );

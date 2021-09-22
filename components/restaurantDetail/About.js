@@ -5,20 +5,21 @@ const yelpRestaurantInfo = {
     name: "Farmhouse Kitchen Thai Cuisine",
     image: "https://www.bahrainyellow.com/img/cats/restaurants.jpg",
     price: "$$",
-    review: "1500",
+    reviews: "1500",
     rating: 5,
     categories: [{ title: "Thai" }, { title: "Comfort Food" }],
 };
 
-const { name, image, price, review, rating, categories } = yelpRestaurantInfo;
+export default function About(props) {
+    const { name, image, price, reviews, rating, categories } =
+        props.route.params;
 
-const formattedCategories = categories.map((cat) => cat.title).join(" · ");
+    const formattedCategories = categories.map((cat) => cat.title).join(" · ");
 
-const description = `${formattedCategories} ${
-    price ? " · " + price : ""
-} · 🎫 · ${rating} ⭐ (${review}+)`;
+    const description = `${formattedCategories} ${
+        typeof price === "undefined" ? " · " + price : ""
+    } · 🎫 · ${rating} ⭐ (${reviews}+)`;
 
-export default function About() {
     return (
         <View>
             <RestuaurantImage image={image} />

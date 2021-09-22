@@ -1,16 +1,28 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 
-const image = "https://www.bahrainyellow.com/img/cats/restaurants.jpg";
+const yelpRestaurantInfo = {
+    name: "Farmhouse Kitchen Thai Cuisine",
+    image: "https://www.bahrainyellow.com/img/cats/restaurants.jpg",
+    price: "$$",
+    review: "1500",
+    rating: 5,
+    categories: [{ title: "Thai" }, { title: "Comfort Food" }],
+};
 
-const title = "Farmhouse Kitchen Thai Cuisine";
-const description = "Thai · Comfort Food · $$ · 🎫 · 4 ⭐ (2913+)";
+const { name, image, price, review, rating, categories } = yelpRestaurantInfo;
+
+const formattedCategories = categories.map((cat) => cat.title).join(" · ");
+
+const description = `${formattedCategories} ${
+    price ? " · " + price : ""
+} · 🎫 · ${rating} ⭐ (${review}+)`;
 
 export default function About() {
     return (
         <View>
             <RestuaurantImage image={image} />
-            <RestaurantTitle title={title} />
+            <RestaurantTitle title={name} />
             <RestaurantDescription desc={description} />
         </View>
     );

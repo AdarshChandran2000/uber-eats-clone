@@ -12,7 +12,6 @@ import { Divider } from "react-native-elements";
 
 const YELP_API_KEY =
     "LTjGqMCDVFetAWnLZ8atNNqLhfGk_hj1G8ON9ricdnDfepZNxvdOeBGXwj0A-shjXF7qYSx0snksxWc5Ml2NIqTBlb8GdTv96ziaMhcoDQeHqocxKsHGeM6RMhVKYXYx";
-//
 
 export default function Home({ navigation }) {
     const [restaurantsData, setRestaurantsData] = useState(localRestaurants);
